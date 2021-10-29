@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Api", "..\Onlineauction.API\OnlineAuction.Api.csproj", "{77CE6DB0-4695-41C2-A8DD-9A301248E7BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Bll", "..\OnlineAuction.Bll\OnlineAuction.Bll.csproj", "{3FDDDA65-AF91-4F4A-B21D-AF82284508D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Dal", "..\OnlineAuction.Dal\OnlineAuction.Dal.csproj", "{AB3E860F-6037-4589-A406-715F2FF4F805}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Common", "..\OnlineAuction.Common\OnlineAuction.Common.csproj", "{7BAAC864-4326-4104-B767-9404B5C09BD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77CE6DB0-4695-41C2-A8DD-9A301248E7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77CE6DB0-4695-41C2-A8DD-9A301248E7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77CE6DB0-4695-41C2-A8DD-9A301248E7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77CE6DB0-4695-41C2-A8DD-9A301248E7BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FDDDA65-AF91-4F4A-B21D-AF82284508D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FDDDA65-AF91-4F4A-B21D-AF82284508D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FDDDA65-AF91-4F4A-B21D-AF82284508D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FDDDA65-AF91-4F4A-B21D-AF82284508D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB3E860F-6037-4589-A406-715F2FF4F805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3E860F-6037-4589-A406-715F2FF4F805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3E860F-6037-4589-A406-715F2FF4F805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3E860F-6037-4589-A406-715F2FF4F805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BAAC864-4326-4104-B767-9404B5C09BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BAAC864-4326-4104-B767-9404B5C09BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BAAC864-4326-4104-B767-9404B5C09BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BAAC864-4326-4104-B767-9404B5C09BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65FFA850-7C5A-43AD-93AA-AC688CF1A287}
+	EndGlobalSection
+EndGlobal
