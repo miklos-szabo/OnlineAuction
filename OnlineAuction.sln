@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Api", "..\Onlineauction.API\OnlineAuction.Api.csproj", "{77CE6DB0-4695-41C2-A8DD-9A301248E7BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Api", "Onlineauction.API\OnlineAuction.Api.csproj", "{77CE6DB0-4695-41C2-A8DD-9A301248E7BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Bll", "..\OnlineAuction.Bll\OnlineAuction.Bll.csproj", "{3FDDDA65-AF91-4F4A-B21D-AF82284508D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Bll", "OnlineAuction.Bll\OnlineAuction.Bll.csproj", "{3FDDDA65-AF91-4F4A-B21D-AF82284508D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Dal", "..\OnlineAuction.Dal\OnlineAuction.Dal.csproj", "{AB3E860F-6037-4589-A406-715F2FF4F805}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Dal", "OnlineAuction.Dal\OnlineAuction.Dal.csproj", "{AB3E860F-6037-4589-A406-715F2FF4F805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Common", "..\OnlineAuction.Common\OnlineAuction.Common.csproj", "{7BAAC864-4326-4104-B767-9404B5C09BD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAuction.Common", "OnlineAuction.Common\OnlineAuction.Common.csproj", "{7BAAC864-4326-4104-B767-9404B5C09BD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
