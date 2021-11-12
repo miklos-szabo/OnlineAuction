@@ -25,4 +25,8 @@
     <ProjectReference Include="..\OnlineAuction.Dal\OnlineAuction.Dal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authorization\" />
+  </ItemGroup>
+
 </Project>

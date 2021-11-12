@@ -8,7 +8,7 @@ namespace OnlineAuction.Dal
     {
         public static void AddDAL(this IServiceCollection services, ConnectionStringOptions connectionStringOptions)
         {
-            services.AddDbContext<CoolDbContext>(options =>
+            services.AddDbContext<OnlineAuctionContext>(options =>
             {
                 options.UseSqlServer(
                     connectionStringOptions.DefaultConnection,

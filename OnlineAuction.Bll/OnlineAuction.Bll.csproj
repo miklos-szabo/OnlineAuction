@@ -8,4 +8,9 @@
     <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineAuction.Common\OnlineAuction.Common.csproj" />
+    <ProjectReference Include="..\OnlineAuction.Dal\OnlineAuction.Dal.csproj" />
+  </ItemGroup>
+
 </Project>

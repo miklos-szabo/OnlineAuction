@@ -6,7 +6,7 @@ namespace OnlineAuction.Dal.Configurations
     {
         public static void ConfigureAllEntities(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new TBDConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

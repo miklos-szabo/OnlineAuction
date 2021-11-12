@@ -4,11 +4,11 @@ using OnlineAuction.Dal.Entities;
 
 namespace OnlineAuction.Dal
 {
-    public class CoolDbContext : DbContext
+    public class OnlineAuctionContext : DbContext
     {
-        public DbSet<TBD> TBDs { get; set; }
+        public DbSet<User> Users { get; set; }
 
-        public CoolDbContext(DbContextOptions<CoolDbContext> options) : base(options)
+        public OnlineAuctionContext(DbContextOptions<OnlineAuctionContext> options) : base(options)
         {
         }
 

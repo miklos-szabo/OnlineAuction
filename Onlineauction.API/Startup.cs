@@ -1,19 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using OnlineAuction.Api.Authentication;
+using OnlineAuction.Api.ExceptionHandling;
 using OnlineAuction.Api.Extensions;
+using OnlineAuction.Bll.AuctionService;
+using OnlineAuction.Bll.AuthenticationService;
 using OnlineAuction.Common.Options;
+using OnlineAuction.Common.RequestContext;
 using OnlineAuction.Dal;
+using AuthenticationOptions = OnlineAuction.Common.Options.AuthenticationOptions;
 
-namespace OnlineAuction.API
+namespace OnlineAuction.Api
 {
     public class Startup
     {
@@ -32,13 +34,25 @@ namespace OnlineAuction.API
         {
             var connectionStringOptions = services.ConfigureOption<ConnectionStringOptions>(_configuration);
 
-            //Példa további options injektálására
-            //services.Configure<TodoOptions>(_configuration.GetSection(nameof(TodoOptions)));
+            services.Configure<AuthenticationOptions>(_configuration.GetSection(nameof(AuthenticationOptions)));
 
-            services.AddControllers();
+            services.AddHttpContextAccessor();
+
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<HttpResponseExceptionFilter>();
+            });
             services.AddSwaggerDocument();
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
             services.AddHttpContextAccessor();
+
+            services.AddAuthentication(AuthenticationSchemes.JwtBearer)
+                .AddScheme<AuthenticationSchemeOptions, JwtBearerAuthenticationHandler>(AuthenticationSchemes.JwtBearer, null);
+
+            services.AddAuthorization();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAuctionService, AuctionService>();
+            services.AddScoped<IRequestContext, RequestContext.RequestContext>();
 
             services.AddDAL(connectionStringOptions);
         }
@@ -54,6 +68,9 @@ namespace OnlineAuction.API
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
