@@ -7,6 +7,9 @@ namespace OnlineAuction.Dal
     public class OnlineAuctionContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Auction> Auctions { get; set; }
+        public DbSet<Bid> Bids { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         public OnlineAuctionContext(DbContextOptions<OnlineAuctionContext> options) : base(options)
         {

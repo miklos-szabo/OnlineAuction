@@ -34,11 +34,11 @@ namespace OnlineAuction.Api.ExceptionHandling
 
             if (context.Exception is BadRequestException brException)
             {
-                _logger.LogWarning("User made a bad request, received message: {Message}", brException.Message);
+                _logger.LogWarning("User made a bad request, received message: {ChatMessage}", brException.Message);
             }
             else if (context.Exception is NotFoundException nfException)
             {
-                _logger.LogWarning("Data requested by user was not found, message: {Message}", nfException.Message);
+                _logger.LogWarning("Data requested by user was not found, message: {ChatMessage}", nfException.Message);
             }
             else
             {

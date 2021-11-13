@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using OnlineAuction.Api.Extensions;
 using OnlineAuction.Bll.AuctionService;
 using OnlineAuction.Bll.AuthenticationService;
 using OnlineAuction.Bll.Hubs;
+using OnlineAuction.Bll.Mappings;
 using OnlineAuction.Common.Options;
 using OnlineAuction.Common.RequestContext;
 using OnlineAuction.Dal;
@@ -56,6 +58,10 @@ namespace OnlineAuction.Api
                         .AllowCredentials();
                 });
             });
+
+            var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new Mappings()));
+            var mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddSwaggerDocument();
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
