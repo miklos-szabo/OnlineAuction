@@ -10,6 +10,7 @@ using OnlineAuction.Api.ExceptionHandling;
 using OnlineAuction.Api.Extensions;
 using OnlineAuction.Bll.AuctionService;
 using OnlineAuction.Bll.AuthenticationService;
+using OnlineAuction.Bll.Hubs;
 using OnlineAuction.Common.Options;
 using OnlineAuction.Common.RequestContext;
 using OnlineAuction.Dal;
@@ -37,11 +38,25 @@ namespace OnlineAuction.Api
             services.Configure<AuthenticationOptions>(_configuration.GetSection(nameof(AuthenticationOptions)));
 
             services.AddHttpContextAccessor();
+            services.AddSignalR();
 
             services.AddControllers(options =>
             {
                 options.Filters.Add<HttpResponseExceptionFilter>();
             });
+
+            // For SignalR
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ClientPermission", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins("http://localhost:3000")
+                        .AllowCredentials();
+                });
+            });
+
             services.AddSwaggerDocument();
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
             services.AddHttpContextAccessor();
@@ -67,12 +82,17 @@ namespace OnlineAuction.Api
                 app.UseSwaggerUi3();
             }
 
+            app.UseCors("ClientPermission");
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<AuctionHub>("/hubs/auctionHub");
+            });
 
             app.UseSpa(spa =>
             {
