@@ -10,8 +10,8 @@ namespace OnlineAuction.Common.DTOs
         public string ItemName { get; set; }
         public DateTime EndTime { get; set; }
         public string Creator { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsClosedByCreator { get; set; }
 
-        public int WinnerPrice { get; set; }
+        public int? WinnerPrice { get; set; }
     }
 }

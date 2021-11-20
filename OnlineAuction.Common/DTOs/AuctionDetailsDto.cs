@@ -16,7 +16,7 @@ namespace OnlineAuction.Common.DTOs
         public int StartingPrice { get; set; }
         public int PriceStep { get; set; }
 
-        public int HighestBid { get; set; }
+        public int? HighestBid { get; set; }
         public List<BidDto> LastBids { get; set; }
     }
 }
