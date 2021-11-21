@@ -39,7 +39,7 @@ namespace OnlineAuction.Bll.AuctionService
                 Description = dto.Description,
                 StartTime = dto.StartTime,
                 EndTime = dto.EndTime,
-                Picture = dto.Picture,
+                Picture = Convert.FromBase64String(dto.Picture),
                 ItemName = dto.ItemName,
                 PriceStep = dto.PriceStep,
                 StartingPrice = dto.StartingPrice,
