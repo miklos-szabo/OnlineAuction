@@ -43,13 +43,16 @@ export default function Aukcio(props) {
     setAuction({ ...auction, endTime: endvalue });
   }, [endvalue]);
 
-  console.log(baseImage);
-
   const uploadImage = async (event) => {
     const file = event.target.files[0];
     const base64 = await convertBase64(file);
-    setAuction({ ...auction, picture: Buffer.from(base64, "base64") });
+
+    setAuction({
+      ...auction,
+      picture: window.btoa(base64),
+    });
     setBaseImage(base64);
+    //Buffer.from(base64, "base64")
   };
 
   const convertBase64 = (file) => {
