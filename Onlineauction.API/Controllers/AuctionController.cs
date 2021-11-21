@@ -47,7 +47,7 @@ namespace OnlineAuction.Api.Controllers
             return await _auctionService.GetFutureAuctions();
         }
 
-        [HttpGet("GetAuctionDetails")]
+        [HttpGet("{auctionId}/details")]
         public async Task<AuctionDetailsDto> GetAuctionDetails(int auctionId)
         {
             return await _auctionService.GetAuctionDetails(auctionId);
@@ -78,9 +78,9 @@ namespace OnlineAuction.Api.Controllers
         }
 
         [HttpGet("{auctionId}/GetMessages")]
-        public async Task GetChatMessages(int auctionId)
+        public async Task<List<ChatMessageDto>> GetChatMessages(int auctionId)
         {
-            await _auctionService.GetChatMessages(auctionId);
+            return await _auctionService.GetChatMessages(auctionId);
         }
 
     }

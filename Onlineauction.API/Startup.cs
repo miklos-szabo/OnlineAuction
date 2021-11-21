@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using OnlineAuction.Api.Authentication;
 using OnlineAuction.Api.ExceptionHandling;
 using OnlineAuction.Api.Extensions;
@@ -70,7 +72,21 @@ namespace OnlineAuction.Api
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(c =>
+            {
+                c.AddSecurity("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                                        Enter 'Bearer' [space] and then your token in the text input below.
+                                        \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor());
+            });
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
             services.AddHttpContextAccessor();
 
