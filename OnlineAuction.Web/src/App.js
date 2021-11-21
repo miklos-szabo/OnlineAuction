@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function App() {
+import Licitalas from "./ui/licitalas/licit";
+import Aukcio from "./ui/aukcio/aukcio";
+import Aukciok_list from "./ui/aukciok_list/aukciok_list";
+import Register from "./ui/login/register.js";
+import Login from "./ui/login/login.js";
+import Main from "./ui/main";
+
+export default function App() {
+  const [auth, setAuth] = useState({
+    signin: false,
+    username: "",
+    token: "",
+  });
+
+  const cbAuth = (child) => {
+    setAuth(child);
+  };
+
+  console.log(auth);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/aukcio" element={<Aukcio auth={auth} />} />
+        <Route path="/licitalas" element={<Licitalas auth={auth} />} />
+        <Route path="/aukciok_list" element={<Aukciok_list auth={auth} />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login cbAuth={cbAuth} />} />
+      </Routes>
+    </Router>
   );
 }
-
-export default App;

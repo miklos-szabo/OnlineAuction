@@ -47,6 +47,13 @@ namespace OnlineAuction.Api
                 options.Filters.Add<HttpResponseExceptionFilter>();
             });
 
+
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder => builder.WithOrigins(new[] { "http://localhost:53303/" }).AllowCredentials());
+            });
+
             // For SignalR
             services.AddCors(options =>
             {
@@ -106,7 +113,7 @@ namespace OnlineAuction.Api
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3001");
                 }
             });
         }
