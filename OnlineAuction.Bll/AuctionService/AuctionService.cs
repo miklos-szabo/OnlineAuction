@@ -41,8 +41,8 @@ namespace OnlineAuction.Bll.AuctionService
                 EndTime = dto.EndTime,
                 Picture = dto.Picture,
                 ItemName = dto.ItemName,
-                PriceStep = int.Parse(dto.PriceStep) ,
-                StartingPrice = int.Parse(dto.StartingPrice),
+                PriceStep = dto.PriceStep ,
+                StartingPrice = dto.StartingPrice,
                 IsClosedByCreator = false,
             });
 
