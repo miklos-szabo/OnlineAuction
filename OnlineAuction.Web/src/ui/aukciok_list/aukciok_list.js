@@ -11,6 +11,25 @@ import Menu from "../menu";
 import "./aukciok_list.css";
 
 export default function Aukciok_list() {
+  /* const fetchDatas = () => {
+    fetch(process.env.REACT_APP_API + "Auction/GetOngoingAuctions", {
+      method: "GET",
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "text/plain",
+      },
+    })
+      .then(function (response) {
+        return response.text().then(function (text) {
+          fetchLogin(saltedSha256(password, text));
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+  };*/
+
   return (
     <Box>
       <Menu />

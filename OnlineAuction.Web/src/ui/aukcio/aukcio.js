@@ -35,23 +35,50 @@ export default function Aukcio(props) {
   });
   const [baseImage, setBaseImage] = useState("");
 
-  useEffect(() => {
-    setAuction({ ...auction, startTime: startvalue });
-  }, [startvalue]);
+  const handleTime = () => {
+    setAuction({ ...auction, startTime: new Date() });
+    setAuction({ ...auction, endTime: new Date() });
+    console.log("feeeee");
+  };
 
-  useEffect(() => {
-    setAuction({ ...auction, endTime: endvalue });
-  }, [endvalue]);
+  let endTime;
+  let startTime;
 
-  const uploadImage = async (event) => {
+  useEffect(() => {}, [endvalue]);
+
+  const input = document.querySelector("input");
+  const reader = new FileReader();
+  const fileByteArray = [];
+
+  const uploadImage = async (e) => {
     const file = event.target.files[0];
     const base64 = await convertBase64(file);
+    let binaryString;
+
+    var reader = new FileReader();
+    reader.onload = function () {
+      var arrayBuffer = file;
+      const array = new Uint8Array(arrayBuffer);
+      binaryString = String.fromCharCode.apply(null, array);
+
+      console.log(binaryString);
+    };
+
+    reader.readAsArrayBuffer(e.target.files[0]);
+    reader.onloadend = (evt) => {
+      if (evt.target.readyState === FileReader.DONE) {
+        const arrayBuffer = evt.target.result,
+          array = new Uint8Array(arrayBuffer);
+        for (const a of array) {
+          fileByteArray.push(a);
+        }
+      }
+    };
 
     setAuction({
       ...auction,
-      picture: window.btoa(base64),
+      picture: base64,
     });
-    setBaseImage(base64);
     //Buffer.from(base64, "base64")
   };
 
@@ -70,24 +97,40 @@ export default function Aukcio(props) {
     });
   };
 
-  console.log(props.auth.token);
+  console.log(auction.picture);
+
+  console.log(auction);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    startTime = new Date();
+    endTime = new Date();
+
     fetch(process.env.REACT_APP_API + "Auction/CreateAuction", {
       method: "POST",
       headers: {
-        Authorization: props.auth.token,
+        //Authorization: localStorage.getItem("auth"),
+        Authorization: `Bearer ${localStorage.getItem("auth")}`,
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(auction),
+      body: JSON.stringify({
+        itemName: auction.itemName,
+        picture: auction.picture,
+        description: auction.description,
+        startTime: startTime,
+        endTime: endTime,
+        startingPrice: auction.startingPrice,
+        priceStep: auction.priceStep,
+      }),
     })
       .then((res) => {
         console.log(res);
         console.log(auction.startTime);
+        console.log(auction.endTime);
       })
+
       .catch((error) => {
         console.log(error);
         //alert(error);

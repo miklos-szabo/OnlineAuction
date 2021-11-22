@@ -80,11 +80,7 @@ export default function Login(props) {
           username: username,
           token: res,
         });
-        props.cbAuth({
-          signin: true,
-          username: username,
-          token: res,
-        });
+        localStorage.setItem("auth", res);
       })
       .catch((error) => {
         console.log(error);

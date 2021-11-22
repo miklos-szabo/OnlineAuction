@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Grid } from "@material-ui/core";
 
 import { Navigate } from "react-router-dom";
 
@@ -30,45 +31,55 @@ export default function Menu(props) {
           }}
         >
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ mr: 3 }}>
-              News
-            </Typography>
-            <Button
-              variant="contained"
-              color="menu_button"
-              sx={{ mr: 3, width: 300 }}
-              href="/aukcio"
-            >
-              Aukcio
-            </Button>
-            <Button
-              variant="contained"
-              color="menu_button"
-              sx={{ mr: 3, width: 300 }}
-              href="/licitalas"
-            >
-              Licitalas
-            </Button>
-            <Button
-              variant="contained"
-              color="menu_button"
-              sx={{ mr: 75, width: 500 }}
-              href="/aukciok_list"
-            >
-              Aukciók listája
-            </Button>
-            <Button href="/" color="inherit">
-              LogOut
-            </Button>
+            <Grid container md={12} spacing={1}>
+              <Grid item md={1}>
+                <Typography variant="h6" component="div" sx={{ mr: 3 }}>
+                  News
+                </Typography>
+              </Grid>
+
+              <Grid item md={1}>
+                <Button variant="contained" color="menu_button" href="/aukcio">
+                  Aukcio
+                </Button>
+              </Grid>
+
+              <Grid item md={2}>
+                <Button
+                  variant="contained"
+                  color="menu_button"
+                  href="/aukciok_list"
+                >
+                  Régebbi aukciók
+                </Button>
+              </Grid>
+
+              <Grid item md={2}>
+                <Button
+                  variant="contained"
+                  color="menu_button"
+                  href="/aukciok_list"
+                >
+                  Jelenlegi aukciók
+                </Button>
+              </Grid>
+
+              <Grid item md={2}>
+                <Button
+                  variant="contained"
+                  color="menu_button"
+                  href="/aukciok_list"
+                >
+                  Jövőbeni aukciók
+                </Button>
+              </Grid>
+
+              <Grid item md={2}>
+                <Button href="/" color="inherit">
+                  LogOut
+                </Button>
+              </Grid>
+            </Grid>
           </Toolbar>
         </AppBar>
       </ThemeProvider>

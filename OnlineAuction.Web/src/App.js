@@ -15,21 +15,17 @@ export default function App() {
     token: "",
   });
 
-  const cbAuth = (child) => {
-    setAuth(child);
-  };
-
   console.log(auth);
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/aukcio" element={<Aukcio auth={auth} />} />
-        <Route path="/licitalas" element={<Licitalas auth={auth} />} />
-        <Route path="/aukciok_list" element={<Aukciok_list auth={auth} />} />
+        <Route path="/aukcio" element={<Aukcio />} />
+        <Route path="/licitalas" element={<Licitalas />} />
+        <Route path="/aukciok_list" element={<Aukciok_list />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login cbAuth={cbAuth} />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
