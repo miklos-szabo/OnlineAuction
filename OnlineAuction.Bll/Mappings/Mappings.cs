@@ -19,7 +19,6 @@ namespace OnlineAuction.Bll.Mappings
 
             CreateMap<Auction, AuctionDetailsDto>()
                 .ForMember(x => x.HighestBid, o => o.MapFrom(t => t.Bids.Max(b => b.Price)))
-                .ForMember(x => x.Picture, o => o.MapFrom(t => Convert.ToBase64String(t.Picture)))
                 .ForMember(x => x.LastBids, o => o.MapFrom(t => t.Bids.OrderByDescending(b => b.Price).Take(20)));
 
             CreateMap<Auction, AuctionFutureDto>();
