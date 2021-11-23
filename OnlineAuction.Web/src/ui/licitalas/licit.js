@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { makeStyles } from "@material-ui/styles";
@@ -9,6 +9,7 @@ import picture from "../../teszt.jpg";
 import "./licit.css";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 
 import Menu from "../menu";
 
@@ -34,8 +35,73 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export default function Licitalas() {
+export default function Licitalas(props) {
   const classes = useStyles();
+  const [datas, setDatas] = useState({});
+
+  let picture_url = "data:image/jpeg;base64," + datas.picture;
+
+  console.log(picture_url);
+
+  let price;
+  console.log(price);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_API + "Auction/" + id + "/details", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setDatas(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+  }, []);
+
+  const handleClick = () => {
+    fetch(process.env.REACT_APP_API + "Auction/" + id + "/Bid", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        auctionId: +id,
+        price: +price,
+      }),
+    })
+      .then((response) =>
+        response
+          .json()
+          .then((data) => ({
+            data: data,
+            status: response.status,
+          }))
+          .then((res) => {
+            console.log(res.status, res.data);
+            if (res.status) {
+              alert(res.data);
+            }
+          })
+      )
+      .catch((error) => {
+        console.log(error);
+        //alert(error);
+      });
+  };
+
+  console.log(datas.lastBids == undefined);
 
   return (
     <Box>
@@ -44,87 +110,40 @@ export default function Licitalas() {
       <Box className={classes.page} component="main">
         <Toolbar />
         <Grid container spacing={2} height="100%">
-          <Grid item xs={6}>
+          <Grid item xs={5}>
             <MyItem>
-              <div className="cim">Neve az adott termékneknek....</div>
+              <div className="cim">{datas.itemName}</div>
             </MyItem>
             <MyItem>
-              <img src={picture} alt="Tesztkép" width="400" height="300" />
+              <img src={picture_url} width="200" height="150" />
             </MyItem>
             <MyItem>
-              <div className="leiras">
-                Hosszabb leírás, ahol részletezésre kerül az adott termék stb.
-                stb..... New had happen unable uneasy. Drawings can followed
-                improved out sociable not. Earnestly so do instantly pretended.
-                See general few civilly amiable pleased account carried.
-                Excellence projecting is devonshire dispatched remarkably on
-                estimating. Side in so life past. Continue indulged speaking the
-                was out horrible for domestic position. Seeing rather her you
-                not esteem men settle genius excuse. Deal say over you age from.
-                Comparison new ham melancholy son themselves.
-              </div>
+              <div className="leiras">{datas.description}</div>
             </MyItem>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={7}>
             <MyItem>
               <div className="licitek">
-                <table id="customers">
-                  <tr>
-                    <th>Company</th>
-                    <th>Contact</th>
-                    <th>Country</th>
-                  </tr>
-                  <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                    <td>Germany</td>
-                  </tr>
-                  <tr>
-                    <td>Berglunds snabbköp</td>
-                    <td>Christina Berglund</td>
-                    <td>Sweden</td>
-                  </tr>
-                  <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                    <td>Mexico</td>
-                  </tr>
-                  <tr>
-                    <td>Ernst Handel</td>
-                    <td>Roland Mendel</td>
-                    <td>Austria</td>
-                  </tr>
-                  <tr>
-                    <td>Island Trading</td>
-                    <td>Helen Bennett</td>
-                    <td>UK</td>
-                  </tr>
-                  <tr>
-                    <td>Königlich Essen</td>
-                    <td>Philip Cramer</td>
-                    <td>Germany</td>
-                  </tr>
-                  <tr>
-                    <td>Laughing Bacchus Winecellars</td>
-                    <td>Yoshi Tannamuri</td>
-                    <td>Canada</td>
-                  </tr>
-                  <tr>
-                    <td>Magazzini Alimentari Riuniti</td>
-                    <td>Giovanni Rovelli</td>
-                    <td>Italy</td>
-                  </tr>
-                  <tr>
-                    <td>North/South</td>
-                    <td>Simon Crowther</td>
-                    <td>UK</td>
-                  </tr>
-                  <tr>
-                    <td>Paris spécialités</td>
-                    <td>Marie Bertrand</td>
-                    <td>France</td>
-                  </tr>
-                </table>
+                {" "}
+                {datas.lastBids == undefined && <div>Még nincs licit</div>}
+                {datas.lastBids != undefined && (
+                  <table id="customers">
+                    <thead>
+                      <th>Licitáló</th>
+                      <th>Licit értéke</th>
+                      <th>Időpont</th>
+                    </thead>
+                    <tbody>
+                      {datas.lastBids.map((item) => (
+                        <tr>
+                          <td>{item.bidderUserName}</td>
+                          <td>{item.price}</td>
+                          <td>{item.bidTime}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </MyItem>
             <MyItem>
@@ -140,18 +159,22 @@ export default function Licitalas() {
                 <tr>
                   <td>Új licit:</td>
                   <td className="sajat_licit">
-                    <Input>sa</Input>
+                    <Input
+                      onChange={(e) => {
+                        price = e.target.value;
+                      }}
+                    ></Input>
                   </td>
                 </tr>
               </table>
             </MyItem>
           </Grid>
           <Grid item xs={4}>
-            <div className="akt_licit">Aktuális licitem: 100 Ft</div>
+            <div className="akt_licit">Aktuális licitem: {price} </div>
           </Grid>
           <Grid item xs={8}>
             <div className="licit_btn">
-              <Button variant="contained" color="primary">
+              <Button variant="contained" color="primary" onClick={handleClick}>
                 Licitálás
               </Button>
             </div>

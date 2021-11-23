@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Licitalas from "./ui/licitalas/licit";
 import Aukcio from "./ui/aukcio/aukcio";
-import Aukciok_list from "./ui/aukciok_list/aukciok_list";
+import Jelenaukciok_list from "./ui/aukciok_list/aukciok_list";
 import Register from "./ui/login/register.js";
 import Login from "./ui/login/login.js";
 import Main from "./ui/main";
@@ -22,8 +22,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/aukcio" element={<Aukcio />} />
-        <Route path="/licitalas" element={<Licitalas />} />
-        <Route path="/aukciok_list" element={<Aukciok_list />} />
+        <Route path="/licitalas/:id" element={<Licitalas />} />
+        <Route path="/jelenaukciok_list" element={<Jelenaukciok_list />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </Routes>

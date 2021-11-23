@@ -9,26 +9,32 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Menu from "../menu";
 import "./aukciok_list.css";
+import GavelIcon from "@mui/icons-material/Gavel";
 
-export default function Aukciok_list() {
-  /* const fetchDatas = () => {
+export default function Jelenaukciok_list() {
+  const [datas, setDatas] = useState([]);
+
+  console.log(localStorage.getItem("auth"));
+
+  useEffect(() => {
     fetch(process.env.REACT_APP_API + "Auction/GetOngoingAuctions", {
       method: "GET",
       headers: {
-        Accept: "text/plain",
-        "Content-Type": "text/plain",
+        Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
     })
-      .then(function (response) {
-        return response.text().then(function (text) {
-          fetchLogin(saltedSha256(password, text));
-        });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setDatas(data);
       })
       .catch((error) => {
         console.log(error);
         alert(error);
       });
-  };*/
+  }, []);
 
   return (
     <Box>
@@ -37,61 +43,28 @@ export default function Aukciok_list() {
         <Toolbar />
         <div className="licitek">
           <table id="customers">
-            <tr>
-              <th>Company</th>
-              <th>Contact</th>
-              <th>Country</th>
-            </tr>
-            <tr>
-              <td>Alfreds Futterkiste</td>
-              <td>Maria Anders</td>
-              <td>Germany</td>
-            </tr>
-            <tr>
-              <td>Berglunds snabbköp</td>
-              <td>Christina Berglund</td>
-              <td>Sweden</td>
-            </tr>
-            <tr>
-              <td>Centro comercial Moctezuma</td>
-              <td>Francisco Chang</td>
-              <td>Mexico</td>
-            </tr>
-            <tr>
-              <td>Ernst Handel</td>
-              <td>Roland Mendel</td>
-              <td>Austria</td>
-            </tr>
-            <tr>
-              <td>Island Trading</td>
-              <td>Helen Bennett</td>
-              <td>UK</td>
-            </tr>
-            <tr>
-              <td>Königlich Essen</td>
-              <td>Philip Cramer</td>
-              <td>Germany</td>
-            </tr>
-            <tr>
-              <td>Laughing Bacchus Winecellars</td>
-              <td>Yoshi Tannamuri</td>
-              <td>Canada</td>
-            </tr>
-            <tr>
-              <td>Magazzini Alimentari Riuniti</td>
-              <td>Giovanni Rovelli</td>
-              <td>Italy</td>
-            </tr>
-            <tr>
-              <td>North/South</td>
-              <td>Simon Crowther</td>
-              <td>UK</td>
-            </tr>
-            <tr>
-              <td>Paris spécialités</td>
-              <td>Marie Bertrand</td>
-              <td>France</td>
-            </tr>
+            <thead>
+              <th>Termék</th>
+              <th>Legmagasabb licit</th>
+              <th>Licit lezárása</th>
+              <th>Eladó</th>
+              <th>Licitálok</th>
+            </thead>
+            <tbody>
+              {datas.map((item) => (
+                <tr>
+                  <td>{item.itemName}</td>
+                  <td>{item.highestBid}</td>
+                  <td>{item.endTime}</td>
+                  <td>{item.creator}</td>
+                  <td>
+                    <Button variant="contained" href={"/licitalas/" + item.id}>
+                      <GavelIcon />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </Box>

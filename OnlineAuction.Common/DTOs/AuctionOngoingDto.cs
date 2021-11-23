@@ -11,6 +11,6 @@ namespace OnlineAuction.Common.DTOs
         public DateTime EndTime { get; set; }
         public string Creator { get; set; }
 
-        public int HighestBid { get; set; }
+        public int? HighestBid { get; set; }
     }
 }

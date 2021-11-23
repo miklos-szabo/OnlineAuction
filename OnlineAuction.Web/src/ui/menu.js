@@ -58,7 +58,7 @@ export default function Menu(props) {
                 <Button
                   variant="contained"
                   color="menu_button"
-                  href="/aukciok_list"
+                  href="/jelenaukciok_list"
                 >
                   Jelenlegi aukciók
                 </Button>
