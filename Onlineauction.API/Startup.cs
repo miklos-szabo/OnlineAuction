@@ -51,11 +51,6 @@ namespace OnlineAuction.Api
 
 
 
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder => builder.WithOrigins(new[] { "http://localhost:53303/" }).AllowCredentials());
-            });
-
             // For SignalR
             services.AddCors(options =>
             {
@@ -63,7 +58,7 @@ namespace OnlineAuction.Api
                 {
                     policy.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .WithOrigins("http://localhost:3000")
+                        .WithOrigins("http://localhost:3001")
                         .AllowCredentials();
                 });
             });

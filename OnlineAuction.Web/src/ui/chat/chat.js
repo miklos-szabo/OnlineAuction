@@ -4,54 +4,77 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import ChatWindow from "./window";
 import ChatInput from "./input";
 
-const Chat = () => {
-  const [connection, setConnection] = useState(null);
+const Chat = (props) => {
   const [chat, setChat] = useState([]);
   const latestChat = useRef(null);
 
   latestChat.current = chat;
 
   useEffect(() => {
-    const newConnection = new HubConnectionBuilder()
-      .withUrl("https://localhost:5001/hubs/chat")
+    const connection = new HubConnectionBuilder()
+      .withUrl("http://localhost:53303/hubs/auctionHub")
       .withAutomaticReconnect()
       .build();
 
-    setConnection(newConnection);
+    connection
+      .start()
+      .then((result) => {
+        connection.on("JoinAuction", props.auction_id);
+        console.log("Connected!");
+        console.log(props.auction_id);
+      })
+      .then(() => {
+        connection.on("ReceiveChatMessage", (message) => {
+          const updatedChat = [...latestChat.current];
+          updatedChat.push(message);
+
+          setChat(updatedChat);
+          console.log(chat);
+        });
+      })
+      .catch((e) => console.log("Connection failed: ", e));
   }, []);
 
-  useEffect(() => {
-    if (connection) {
-      connection
-        .start()
-        .then((result) => {
-          console.log("Connected!");
-
-          connection.on("ReceiveMessage", (message) => {
-            const updatedChat = [...latestChat.current];
-            updatedChat.push(message);
-
-            setChat(updatedChat);
-          });
-        })
-        .catch((e) => console.log("Connection failed: ", e));
-    }
-  }, [connection]);
-
-  const sendMessage = async (user, message) => {
-    const chatMessage = {
-      user: user,
-      message: message,
-    };
-
-    if (connection.connectionStarted) {
-      try {
-        await connection.send("SendMessage", chatMessage);
-      } catch (e) {
-        console.log(e);
+  const getMessage = () => {
+    fetch(
+      process.env.REACT_APP_API + "Auction/" + props.auction_id + "/GetMessage",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth")}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       }
-    } else {
-      alert("No connection to server yet.");
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+  };
+
+  const sendMessage = async (message) => {
+    try {
+      await fetch(
+        process.env.REACT_APP_API +
+          "Auction/" +
+          props.auction_id +
+          "/SendMessage",
+        {
+          method: "POST",
+          body: message,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (e) {
+      console.log("Sending message failed.", e);
     }
   };
 

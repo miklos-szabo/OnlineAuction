@@ -10,6 +10,7 @@ import "./licit.css";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import { useNavigate, useParams } from "react-router-dom";
+import Chat from "../chat/chat";
 
 import Menu from "../menu";
 
@@ -103,102 +104,111 @@ export default function Licitalas(props) {
 
       <Box className={classes.page} component="main">
         <Toolbar />
-        <Grid container spacing={2} height="100%">
-          <Grid item xs={5}>
-            <MyItem>
-              <div className="cim">{datas.itemName}</div>
-            </MyItem>
-            <MyItem>
-              <img src={picture_url} width="200" height="150" />
-            </MyItem>
-            <MyItem>
-              <div className="leiras">{datas.description}</div>
-              <div className="licit_kezdes">
-                Licit kezdés:{" "}
-                {new Date(datas.startTime).toTimeString().substring(0, 8) +
-                  "\t" +
-                  new Date(datas.startTime).toDateString()}
-              </div>
-              <div className="licit_vege">
-                Licit vége:{" "}
-                {new Date(datas.endTime).toTimeString().substring(0, 8) +
-                  "\t" +
-                  new Date(datas.endTime).toDateString()}
-              </div>
-            </MyItem>
-          </Grid>
-          <Grid item xs={7}>
-            <MyItem>
-              <div className="licitek">
-                {" "}
-                {datas.lastBids == undefined && <div>Még nincs licit</div>}
-                {datas.lastBids != undefined && (
-                  <table id="customers">
-                    <thead>
-                      <th>Licitáló</th>
-                      <th>Licit értéke</th>
-                      <th>Időpont</th>
-                    </thead>
-                    <tbody>
-                      {datas.lastBids.map((item) => (
-                        <tr>
-                          <td>{item.bidderUserName}</td>
-                          <td>{item.price} Ft</td>
-                          <td className="t_date">
-                            <div>
-                              {new Date(item.bidTime)
-                                .toTimeString()
-                                .substring(0, 8)}
-                            </div>
-                            <div>{new Date(item.bidTime).toDateString()}</div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </div>
-            </MyItem>
-            <MyItem className="table_btn_licit">
-              <table>
-                {datas.highestBid == null && (
-                  <tr>
-                    <td>Kezdő licit: </td>
-                    <td>{datas.startingPrice} Ft</td>
-                  </tr>
-                )}
-                {datas.highestBid != null && (
-                  <tr>
-                    <td>Aktuális licit: </td>
-                    <td>{datas.highestBid} Ft</td>
-                  </tr>
-                )}
+        <Grid container>
+          <Grid container item md={9} spacing={2} height="100%">
+            <Grid item xs={5}>
+              <MyItem>
+                <div className="cim">{datas.itemName}</div>
+              </MyItem>
+              <MyItem>
+                <img src={picture_url} width="200" height="150" />
+              </MyItem>
+              <MyItem>
+                <div className="leiras">{datas.description}</div>
+                <div className="licit_kezdes">
+                  Licit kezdés:{" "}
+                  {new Date(datas.startTime).toTimeString().substring(0, 8) +
+                    "\t" +
+                    new Date(datas.startTime).toDateString()}
+                </div>
+                <div className="licit_vege">
+                  Licit vége:{" "}
+                  {new Date(datas.endTime).toTimeString().substring(0, 8) +
+                    "\t" +
+                    new Date(datas.endTime).toDateString()}
+                </div>
+              </MyItem>
+            </Grid>
+            <Grid item xs={7}>
+              <MyItem>
+                <div className="licitek">
+                  {" "}
+                  {datas.lastBids == undefined && <div>Még nincs licit</div>}
+                  {datas.lastBids != undefined && (
+                    <table id="customers">
+                      <thead>
+                        <th>Licitáló</th>
+                        <th>Licit értéke</th>
+                        <th>Időpont</th>
+                      </thead>
+                      <tbody>
+                        {datas.lastBids.map((item) => (
+                          <tr>
+                            <td>{item.bidderUserName}</td>
+                            <td>{item.price} Ft</td>
+                            <td className="t_date">
+                              <div>
+                                {new Date(item.bidTime)
+                                  .toTimeString()
+                                  .substring(0, 8)}
+                              </div>
+                              <div>{new Date(item.bidTime).toDateString()}</div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </MyItem>
+              <MyItem className="table_btn_licit">
+                <table>
+                  {datas.highestBid == null && (
+                    <tr>
+                      <td>Kezdő licit: </td>
+                      <td>{datas.startingPrice} Ft</td>
+                    </tr>
+                  )}
+                  {datas.highestBid != null && (
+                    <tr>
+                      <td>Aktuális licit: </td>
+                      <td>{datas.highestBid} Ft</td>
+                    </tr>
+                  )}
 
-                <tr>
-                  <td>Licitlépcső:</td>
-                  <td>{datas.priceStep} Ft</td>
-                </tr>
-                <tr>
-                  <td>Új licit:</td>
-                  <td className="sajat_licit">
-                    <Input
-                      onChange={(e) => {
-                        price = e.target.value;
-                      }}
-                    ></Input>
-                  </td>
-                </tr>
-              </table>
-              <div className="licit_btn">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleClick}
-                >
-                  Licitálás
-                </Button>
-              </div>
-            </MyItem>
+                  <tr>
+                    <td>Licitlépcső:</td>
+                    <td>{datas.priceStep} Ft</td>
+                  </tr>
+                  <tr>
+                    <td>Új licit:</td>
+                    <td className="sajat_licit">
+                      <Input
+                        onChange={(e) => {
+                          price = e.target.value;
+                        }}
+                      ></Input>
+                    </td>
+                  </tr>
+                </table>
+                <div className="licit_btn">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClick}
+                  >
+                    Licitálás
+                  </Button>
+                </div>
+              </MyItem>
+            </Grid>
+          </Grid>
+          <Grid container item md={3} spacing={2} height="100%">
+            <Toolbar />
+
+            <div style={{ margin: "0 30%" }}>
+              <Chat auction_id={id} />
+            </div>
           </Grid>
         </Grid>
       </Box>

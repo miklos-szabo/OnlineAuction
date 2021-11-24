@@ -1,24 +1,18 @@
 import React, { useState } from "react";
 
 export default function ChatInput(props) {
-  const [user, setUser] = useState("");
   const [message, setMessage] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const isUserProvided = user && user !== "";
     const isMessageProvided = message && message !== "";
 
-    if (isUserProvided && isMessageProvided) {
-      props.sendMessage(user, message);
+    if (isMessageProvided) {
+      props.sendMessage(message);
     } else {
       alert("Hiányos üzenetkérés");
     }
-  };
-
-  const handleUserUpdate = (e) => {
-    setUser(e.target.value);
   };
 
   const handleMessageUpdate = (e) => {
@@ -27,10 +21,6 @@ export default function ChatInput(props) {
 
   return (
     <form onSubmit={onSubmit}>
-      <label htmlFor="user">Felhasználó:</label>
-      <br />
-      <input id="user" name="user" value={user} onChange={handleUserUpdate} />
-      <br />
       <label htmlFor="message">Üzenet:</label>
       <br />
       <input
