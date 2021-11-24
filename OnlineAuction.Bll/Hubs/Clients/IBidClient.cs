@@ -6,9 +6,9 @@ namespace OnlineAuction.Bll.Hubs.Clients
 {
     public interface IBidClient
     {
-        Task ReceiveBid(List<BidDto> bidDtos);
+        Task ReceiveBid(BidDto[] bidDtos);
 
-        Task ReceiveChatMessage(List<ChatMessageDto> chatMessageDtos);
+        Task ReceiveChatMessage(ChatMessageDto[] chatMessageDtos);
 
         public Task JoinAuction(string auctionName);
 

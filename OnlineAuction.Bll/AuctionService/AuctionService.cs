@@ -146,7 +146,7 @@ namespace OnlineAuction.Bll.AuctionService
 
             await _auctionHub.Clients.Group(dto.AuctionId.ToString()).ReceiveBid(
                 await _context.Bids.Where(b => b.AuctionId == dto.AuctionId).OrderByDescending(b => b.Price).Take(10)
-                    .ProjectTo<BidDto>(_mapper.ConfigurationProvider).ToListAsync());
+                    .ProjectTo<BidDto>(_mapper.ConfigurationProvider).ToArrayAsync());
         }
 
         public async Task SendChatMessage(int auctionId, string message)
@@ -169,7 +169,7 @@ namespace OnlineAuction.Bll.AuctionService
 
             await _auctionHub.Clients.Groups(auctionId.ToString()).ReceiveChatMessage(
                 await _context.ChatMessages.Where(m => m.AuctionId == auctionId).OrderByDescending(m => m.TimeStamp).Take(10)
-                    .ProjectTo<ChatMessageDto>(_mapper.ConfigurationProvider).ToListAsync());
+                    .ProjectTo<ChatMessageDto>(_mapper.ConfigurationProvider).ToArrayAsync());
         }
 
         public async Task<List<ChatMessageDto>> GetChatMessages(int auctionId)
