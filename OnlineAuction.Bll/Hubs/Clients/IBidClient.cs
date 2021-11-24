@@ -7,6 +7,8 @@ namespace OnlineAuction.Bll.Hubs.Clients
     {
         Task ReceiveBid(BidDto bidDto);
 
+        Task ReceiveChatMessage(ChatMessageDto chatMessageDto);
+
         public Task JoinAuction(string auctionName);
 
         public Task LeaveAuction(string auctionName);

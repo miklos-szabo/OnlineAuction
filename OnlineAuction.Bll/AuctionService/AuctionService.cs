@@ -154,15 +154,18 @@ namespace OnlineAuction.Bll.AuctionService
             if (auction == null)
                 throw new NotFoundException($"Auction {auctionId} was not found");
 
-            _context.ChatMessages.Add(new ChatMessage
+            var chatMessage = new ChatMessage
             {
                 AuctionId = auctionId,
                 Message = message,
                 SenderFullName = _requestContext.UserName,
                 TimeStamp = DateTime.UtcNow,
-            });
+            };
 
+            _context.ChatMessages.Add(chatMessage);
             await _context.SaveChangesAsync();
+
+            await _auctionHub.Clients.Groups(auctionId.ToString()).ReceiveChatMessage(_mapper.Map<ChatMessageDto>(chatMessage));
         }
 
         public async Task<List<ChatMessageDto>> GetChatMessages(int auctionId)
