@@ -35,19 +35,7 @@ export default function Register() {
   const [Email, setEmail] = useState("");
   const [username, setusername] = useState("");
   const [password, setPassword] = useState("");
-  const [res, setRes] = useState({
-    done: false,
-    data: "",
-  });
   let mysalt;
-
-  useEffect(() => {
-    if (res.data.includes("Username already taken")) {
-      alert("A felhasználó már létezik");
-    } else if (res.done == true) {
-      navigate("/");
-    }
-  }, [res]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,13 +55,14 @@ export default function Register() {
         email: Email,
       }),
     })
-      .then((res) => res.json())
       .then((res) => {
-        setRes({
-          done: true,
-          data: res,
-        });
-        console.log(res);
+        console.log(res.status);
+        if (res.status == 200) {
+          navigate("/");
+        }
+        if (res.status != 200) {
+          alert("Hibás regisztráció");
+        }
       })
       .catch((error) => {
         console.log(error);

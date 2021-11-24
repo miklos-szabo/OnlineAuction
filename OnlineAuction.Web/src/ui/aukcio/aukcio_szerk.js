@@ -14,7 +14,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import DateTimePicker from "react-datetime-picker";
 import { Buffer } from "buffer";
 import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MyItem = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -23,27 +23,37 @@ const MyItem = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function Aukcio(props) {
+export default function AukcioSzerk(props) {
   const navigate = useNavigate();
-  const [startvalue, onChangeStart] = useState(new Date());
-  const [endvalue, onChangeEnd] = useState(new Date());
-  const [auction, setAuction] = useState({
-    itemName: "",
-    picture: "",
-    description: "",
-    startTime: "",
-    endTime: "",
-    startingPrice: 0,
-    priceStep: 0,
-  });
+  const [auction, setAuction] = useState({});
+  const { id } = useParams();
 
-  const input = document.querySelector("input");
-  const reader = new FileReader();
-  const fileByteArray = [];
+  const [startvalue, onChangeStart] = useState(auction.startTime);
+  const [endvalue, onChangeEnd] = useState(auction.endTime);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_API + "Auction/" + id + "/details", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setAuction(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+  }, []);
 
   const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
+    let file = e.target.files[0];
+    let base64 = await convertBase64(file);
     setAuction({
       ...auction,
       picture: base64.substring(base64.lastIndexOf(",") + 1),
@@ -52,7 +62,7 @@ export default function Aukcio(props) {
 
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
+      let fileReader = new FileReader();
       fileReader.readAsDataURL(file);
 
       fileReader.onload = () => {
@@ -68,7 +78,7 @@ export default function Aukcio(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(process.env.REACT_APP_API + "Auction/CreateAuction", {
+    fetch(process.env.REACT_APP_API + "Auction/" + id + "/Edit", {
       method: "POST",
       headers: {
         //Authorization: localStorage.getItem("auth"),
@@ -77,6 +87,7 @@ export default function Aukcio(props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        id: +id,
         itemName: auction.itemName,
         picture: auction.picture,
         description: auction.description,
@@ -116,8 +127,8 @@ export default function Aukcio(props) {
             <Grid container item md={5}>
               <Grid item md={12}>
                 <TextField
-                  required
-                  label={"Aukció tárgya"}
+                  value={auction.itemName}
+                  helperText={"Aukció tárgya"}
                   onChange={(e) =>
                     setAuction({ ...auction, itemName: e.target.value })
                   }
@@ -129,7 +140,8 @@ export default function Aukcio(props) {
                   fullWidth
                   rows={4}
                   required
-                  label={"Részletes leírása"}
+                  value={auction.description}
+                  helperText={"Részletes leírása"}
                   onChange={(e) =>
                     setAuction({ ...auction, description: e.target.value })
                   }
@@ -143,27 +155,20 @@ export default function Aukcio(props) {
                   sx={{ border: "1px dashed grey" }}
                   height="150px"
                 >
-                  {auction.picture == "" && (
-                    <Button variant="contained" component="label">
-                      <Icon>
-                        <ImageIcon />
-                      </Icon>
-                      <input
-                        type="file"
-                        hidden
-                        onChange={(e) => {
-                          uploadImage(e);
-                        }}
-                      />
-                    </Button>
-                  )}
-                  {auction.picture != "" && (
+                  <Button variant="outlined" component="label">
+                    <input
+                      type="file"
+                      hidden
+                      onChange={(e) => {
+                        uploadImage(e);
+                      }}
+                    />
                     <img
                       src={"data:image/jpeg;base64," + auction.picture}
                       width="200"
                       height="150"
                     />
-                  )}
+                  </Button>
                 </Box>
               </Grid>
             </Grid>
@@ -171,14 +176,16 @@ export default function Aukcio(props) {
             <Grid container item md={6} spacing={1}>
               <Grid item md={12}>
                 <TextField
-                  label={"Kezdőlicit"}
+                  helperText={"Kezdőlicit"}
+                  value={auction.startingPrice}
                   required
                   onChange={(e) =>
                     setAuction({ ...auction, startingPrice: e.target.value })
                   }
                 />
                 <TextField
-                  label={"Licitlépcső"}
+                  helperText={"Licitlépcső"}
+                  value={auction.priceStep}
                   required
                   onChange={(e) =>
                     setAuction({ ...auction, priceStep: e.target.value })
@@ -193,7 +200,11 @@ export default function Aukcio(props) {
                 Befejeződátum:
               </Grid>
               <Grid item md={4} className="date">
-                <DateTimePicker onChange={onChangeStart} value={startvalue} />
+                <DateTimePicker
+                  onChange={onChangeStart}
+                  selected={auction.startTime}
+                  value={startvalue}
+                />
               </Grid>
               <Grid item md={6} className="date">
                 <DateTimePicker onChange={onChangeEnd} value={endvalue} />
@@ -201,7 +212,7 @@ export default function Aukcio(props) {
               <Grid item md={12}>
                 <div className="licit_btn">
                   <Button type="submit" variant="contained" color="primary">
-                    Aukció létrehozása
+                    Aukció szerkesztése
                   </Button>
                 </div>
               </Grid>

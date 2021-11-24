@@ -55,7 +55,11 @@ export default function Jelenaukciok_list() {
                 <tr>
                   <td>{item.itemName}</td>
                   <td>{item.highestBid}</td>
-                  <td>{item.endTime}</td>
+                  <td>
+                    {new Date(item.endTime).toTimeString().substring(0, 8) +
+                      "\t" +
+                      new Date(item.endTime).toDateString()}
+                  </td>
                   <td>{item.creator}</td>
                   <td>
                     <Button variant="contained" href={"/licitalas/" + item.id}>

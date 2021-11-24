@@ -1,15 +1,11 @@
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import { Grid } from "@material-ui/core";
-
-import { Navigate } from "react-router-dom";
-
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "./menu.css";
 
 const theme = createTheme({
   palette: {
@@ -34,21 +30,27 @@ export default function Menu(props) {
             <Grid container md={12} spacing={1}>
               <Grid item md={1}>
                 <Typography variant="h6" component="div" sx={{ mr: 3 }}>
-                  News
+                  Aukciók
                 </Typography>
               </Grid>
 
-              <Grid item md={1}>
-                <Button variant="contained" color="menu_button" href="/aukcio">
-                  Aukcio
+              <Grid item md={2}>
+                <Button
+                  className="btn"
+                  variant="contained"
+                  color="menu_button"
+                  href="/aukcio"
+                >
+                  Új aukció
                 </Button>
               </Grid>
 
               <Grid item md={2}>
                 <Button
+                  className="btn"
                   variant="contained"
                   color="menu_button"
-                  href="/aukciok_list"
+                  href="/regiaukciok_list"
                 >
                   Régebbi aukciók
                 </Button>
@@ -56,6 +58,7 @@ export default function Menu(props) {
 
               <Grid item md={2}>
                 <Button
+                  className="btn"
                   variant="contained"
                   color="menu_button"
                   href="/jelenaukciok_list"
@@ -66,16 +69,27 @@ export default function Menu(props) {
 
               <Grid item md={2}>
                 <Button
+                  className="btn"
                   variant="contained"
                   color="menu_button"
-                  href="/aukciok_list"
+                  href="/jovoaukciok_list"
                 >
                   Jövőbeni aukciók
                 </Button>
               </Grid>
 
-              <Grid item md={2}>
-                <Button href="/" color="inherit">
+              <Grid item md={1}>
+                <Button
+                  className="btn"
+                  variant="contained"
+                  color="menu_button"
+                  href="/sajat"
+                >
+                  Saját
+                </Button>
+              </Grid>
+              <Grid item md={1}>
+                <Button className="log" href="/" color="inherit">
                   LogOut
                 </Button>
               </Grid>

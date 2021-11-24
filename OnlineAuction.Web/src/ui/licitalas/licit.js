@@ -9,7 +9,7 @@ import picture from "../../teszt.jpg";
 import "./licit.css";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Menu from "../menu";
 
@@ -38,15 +38,11 @@ const useStyles = makeStyles((theme) => {
 export default function Licitalas(props) {
   const classes = useStyles();
   const [datas, setDatas] = useState({});
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   let picture_url = "data:image/jpeg;base64," + datas.picture;
-
-  console.log(picture_url);
-
   let price;
-  console.log(price);
-
-  const { id } = useParams();
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API + "Auction/" + id + "/details", {
@@ -101,8 +97,6 @@ export default function Licitalas(props) {
       });
   };
 
-  console.log(datas.lastBids == undefined);
-
   return (
     <Box>
       <Menu />
@@ -119,6 +113,18 @@ export default function Licitalas(props) {
             </MyItem>
             <MyItem>
               <div className="leiras">{datas.description}</div>
+              <div className="licit_kezdes">
+                Licit kezdés:{" "}
+                {new Date(datas.startTime).toTimeString().substring(0, 8) +
+                  "\t" +
+                  new Date(datas.startTime).toDateString()}
+              </div>
+              <div className="licit_vege">
+                Licit vége:{" "}
+                {new Date(datas.endTime).toTimeString().substring(0, 8) +
+                  "\t" +
+                  new Date(datas.endTime).toDateString()}
+              </div>
             </MyItem>
           </Grid>
           <Grid item xs={7}>
@@ -137,8 +143,15 @@ export default function Licitalas(props) {
                       {datas.lastBids.map((item) => (
                         <tr>
                           <td>{item.bidderUserName}</td>
-                          <td>{item.price}</td>
-                          <td>{item.bidTime}</td>
+                          <td>{item.price} Ft</td>
+                          <td className="t_date">
+                            <div>
+                              {new Date(item.bidTime)
+                                .toTimeString()
+                                .substring(0, 8)}
+                            </div>
+                            <div>{new Date(item.bidTime).toDateString()}</div>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -146,15 +159,24 @@ export default function Licitalas(props) {
                 )}
               </div>
             </MyItem>
-            <MyItem>
+            <MyItem className="table_btn_licit">
               <table>
-                <tr>
-                  <td>Aktuális licit: </td>
-                  <td>200 Ft</td>
-                </tr>
+                {datas.highestBid == null && (
+                  <tr>
+                    <td>Kezdő licit: </td>
+                    <td>{datas.startingPrice} Ft</td>
+                  </tr>
+                )}
+                {datas.highestBid != null && (
+                  <tr>
+                    <td>Aktuális licit: </td>
+                    <td>{datas.highestBid} Ft</td>
+                  </tr>
+                )}
+
                 <tr>
                   <td>Licitlépcső:</td>
-                  <td>50 Ft</td>
+                  <td>{datas.priceStep} Ft</td>
                 </tr>
                 <tr>
                   <td>Új licit:</td>
@@ -167,17 +189,16 @@ export default function Licitalas(props) {
                   </td>
                 </tr>
               </table>
+              <div className="licit_btn">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClick}
+                >
+                  Licitálás
+                </Button>
+              </div>
             </MyItem>
-          </Grid>
-          <Grid item xs={4}>
-            <div className="akt_licit">Aktuális licitem: {price} </div>
-          </Grid>
-          <Grid item xs={8}>
-            <div className="licit_btn">
-              <Button variant="contained" color="primary" onClick={handleClick}>
-                Licitálás
-              </Button>
-            </div>
           </Grid>
         </Grid>
       </Box>

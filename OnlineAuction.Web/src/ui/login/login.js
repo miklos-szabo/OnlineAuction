@@ -81,6 +81,7 @@ export default function Login(props) {
           token: res,
         });
         localStorage.setItem("auth", res);
+        localStorage.setItem("creator", username);
       })
       .catch((error) => {
         console.log(error);

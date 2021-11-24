@@ -8,9 +8,17 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
   text-align: left;
+  min-height: 100px;
 }
 
-.sajat_licit {
+.licit_btn {
+  margin-top: 15px;
+}
+
+.licit_kezdes,
+.licit_vege {
+  text-align: left;
+  color: rgb(136, 135, 135);
 }
 
 .tableItem {
@@ -31,6 +39,10 @@
 
 .MuiGrid-item {
   padding: spacing(1);
+}
+
+.licitek {
+  min-height: 200px;
 }
 
 table {
