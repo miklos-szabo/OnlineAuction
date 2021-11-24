@@ -78,7 +78,7 @@ namespace OnlineAuction.Bll.AuthenticationService
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.NameIdentifier, user.UserName),
                 }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = DateTime.Now.AddDays(1),
                 Issuer = _options.Issuer,
                 Audience = _options.Audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Convert.FromBase64String(_options.JwtKey)), SecurityAlgorithms.HmacSha256Signature)

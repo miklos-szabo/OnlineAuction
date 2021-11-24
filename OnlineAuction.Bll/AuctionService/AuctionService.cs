@@ -52,7 +52,7 @@ namespace OnlineAuction.Bll.AuctionService
         public async Task<List<AuctionClosedDto>> GetClosedAuctions()
         {
             return await _context.Auctions
-                .Where(a => a.EndTime < DateTime.UtcNow || a.IsClosedByCreator)
+                .Where(a => a.EndTime < DateTime.Now || a.IsClosedByCreator)
                 .ProjectTo<AuctionClosedDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -60,7 +60,7 @@ namespace OnlineAuction.Bll.AuctionService
         public async Task<List<AuctionOngoingDto>> GetOngoingAuctions()
         {
             return await _context.Auctions
-                .Where(a => a.EndTime > DateTime.UtcNow && a.StartTime < DateTime.UtcNow && !a.IsClosedByCreator)
+                .Where(a => a.EndTime > DateTime.Now && a.StartTime < DateTime.Now && !a.IsClosedByCreator)
                 .ProjectTo<AuctionOngoingDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -68,7 +68,7 @@ namespace OnlineAuction.Bll.AuctionService
         public async Task<List<AuctionFutureDto>> GetFutureAuctions()
         {
             return await _context.Auctions
-                .Where(a => a.StartTime > DateTime.UtcNow && !a.IsClosedByCreator)
+                .Where(a => a.StartTime > DateTime.Now && !a.IsClosedByCreator)
                 .ProjectTo<AuctionFutureDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -126,16 +126,16 @@ namespace OnlineAuction.Bll.AuctionService
             if (_requestContext.UserName == auction.Creator)
                 throw new BadRequestException("You can't bid on your own auction!");
 
-            if(auction.EndTime < DateTime.UtcNow || auction.IsClosedByCreator)
+            if(auction.EndTime < DateTime.Now || auction.IsClosedByCreator)
                 throw new BadRequestException("Auction is closed!");
 
-            if (auction.StartTime > DateTime.UtcNow)
+            if (auction.StartTime > DateTime.Now)
                 throw new BadRequestException("Auction hasn't started yet!");
 
             var newBid = new Bid
             {
                 AuctionId = dto.AuctionId,
-                BidTime = DateTime.UtcNow,
+                BidTime = DateTime.Now,
                 BidderFullName = _requestContext.Name,
                 BidderUserName = _requestContext.UserName,
                 Price = dto.Price
@@ -159,7 +159,7 @@ namespace OnlineAuction.Bll.AuctionService
                 AuctionId = auctionId,
                 Message = message,
                 SenderFullName = _requestContext.UserName,
-                TimeStamp = DateTime.UtcNow,
+                TimeStamp = DateTime.Now,
             };
 
             _context.ChatMessages.Add(chatMessage);
