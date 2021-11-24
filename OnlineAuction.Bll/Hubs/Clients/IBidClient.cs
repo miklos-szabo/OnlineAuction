@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using OnlineAuction.Common.DTOs;
 
 namespace OnlineAuction.Bll.Hubs.Clients
 {
     public interface IBidClient
     {
-        Task ReceiveBid(BidDto bidDto);
+        Task ReceiveBid(List<BidDto> bidDtos);
 
-        Task ReceiveChatMessage(ChatMessageDto chatMessageDto);
+        Task ReceiveChatMessage(List<ChatMessageDto> chatMessageDtos);
 
         public Task JoinAuction(string auctionName);
 
