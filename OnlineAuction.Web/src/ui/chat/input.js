@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./chat.css";
 
 export default function ChatInput(props) {
   const [message, setMessage] = useState("");
@@ -21,7 +22,9 @@ export default function ChatInput(props) {
 
   return (
     <form onSubmit={onSubmit}>
-      <label htmlFor="message">Üzenet:</label>
+      <label className="uzenet_text" htmlFor="message">
+        Üzenet:
+      </label>
       <br />
       <input
         type="text"
@@ -32,7 +35,9 @@ export default function ChatInput(props) {
       />
       <br />
       <br />
-      <button>Üzenet küldése</button>
+      <button type="submit" className="uzenet_btn">
+        Üzenet küldése
+      </button>
     </form>
   );
 }

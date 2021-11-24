@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { makeStyles } from "@material-ui/styles";
@@ -11,6 +11,7 @@ import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import Chat from "../chat/chat";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 import Menu from "../menu";
 
@@ -39,11 +40,20 @@ const useStyles = makeStyles((theme) => {
 export default function Licitalas(props) {
   const classes = useStyles();
   const [datas, setDatas] = useState({});
+  const [bidList, setBidList] = useState();
+  const [messageList, setMessageList] = useState([]);
   const { id } = useParams();
-  const navigate = useNavigate();
 
   let picture_url = "data:image/jpeg;base64," + datas.picture;
   let price;
+
+  const [chat, setChat] = useState([]);
+  const latestChat = useRef(null);
+
+  let connection;
+  let closed;
+
+  latestChat.current = chat;
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API + "Auction/" + id + "/details", {
@@ -57,13 +67,72 @@ export default function Licitalas(props) {
       .then((response) => response.json())
       .then((data) => {
         setDatas(data);
-        console.log(data);
+        setBidList(data.lastBids.slice(0, 10));
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+
+    fetch(process.env.REACT_APP_API + "Auction/" + id + "/GetMessages", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("auth")}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setChat(data.slice(-7));
       })
       .catch((error) => {
         console.log(error);
         alert(error);
       });
   }, []);
+
+  console.log(chat);
+
+  useEffect(() => {
+    connection = new HubConnectionBuilder()
+      .withUrl("http://localhost:53303/hubs/auctionHub")
+      .withAutomaticReconnect()
+      .build();
+
+    connection
+      .start()
+      .then((result) => {
+        connection.send("JoinAuction", id);
+        console.log("Connected!");
+      })
+      .then(() => {
+        connection.on("ReceiveChatMessage", (message) => {
+          /*const updatedChat = [...latestChat.current];
+          updatedChat.push(message);
+          setMessageList([...messageList, message]);
+          setChat(updatedChat);*/
+          const updatedChat = [...latestChat.current];
+          updatedChat.push(message);
+          //setMessageList(message);
+          setChat(message);
+        });
+      })
+      .then(() => {
+        connection.on("ReceiveBid", (bid) => {
+          setBidList(bid);
+        });
+      })
+      .then(() => {
+        if (closed) connection.send("LeaveAuction", id);
+      })
+      .catch((e) => console.log("Connection failed: ", e));
+  }, []);
+
+  const handleClickClose = (connection) => {
+    closed = true;
+    console.log(closed);
+  };
 
   const handleClick = () => {
     fetch(process.env.REACT_APP_API + "Auction/" + id + "/Bid", {
@@ -105,7 +174,7 @@ export default function Licitalas(props) {
       <Box className={classes.page} component="main">
         <Toolbar />
         <Grid container>
-          <Grid container item md={9} spacing={2} height="100%">
+          <Grid container item md={10} spacing={2} height="100%">
             <Grid item xs={5}>
               <MyItem>
                 <div className="cim">{datas.itemName}</div>
@@ -126,39 +195,6 @@ export default function Licitalas(props) {
                   {new Date(datas.endTime).toTimeString().substring(0, 8) +
                     "\t" +
                     new Date(datas.endTime).toDateString()}
-                </div>
-              </MyItem>
-            </Grid>
-            <Grid item xs={7}>
-              <MyItem>
-                <div className="licitek">
-                  {" "}
-                  {datas.lastBids == undefined && <div>Még nincs licit</div>}
-                  {datas.lastBids != undefined && (
-                    <table id="customers">
-                      <thead>
-                        <th>Licitáló</th>
-                        <th>Licit értéke</th>
-                        <th>Időpont</th>
-                      </thead>
-                      <tbody>
-                        {datas.lastBids.map((item) => (
-                          <tr>
-                            <td>{item.bidderUserName}</td>
-                            <td>{item.price} Ft</td>
-                            <td className="t_date">
-                              <div>
-                                {new Date(item.bidTime)
-                                  .toTimeString()
-                                  .substring(0, 8)}
-                              </div>
-                              <div>{new Date(item.bidTime).toDateString()}</div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
                 </div>
               </MyItem>
               <MyItem className="table_btn_licit">
@@ -202,12 +238,51 @@ export default function Licitalas(props) {
                 </div>
               </MyItem>
             </Grid>
+            <Grid item xs={7}>
+              <MyItem>
+                <div className="licitek">
+                  {" "}
+                  {bidList == undefined && <div>Még nincs licit</div>}
+                  {bidList != undefined && (
+                    <table id="customers">
+                      <thead>
+                        <th>Licitáló</th>
+                        <th>Licit értéke</th>
+                        <th>Időpont</th>
+                      </thead>
+                      <tbody>
+                        {bidList.map((item) => (
+                          <tr>
+                            <td>{item.bidderUserName}</td>
+                            <td>{item.price} Ft</td>
+                            <td className="t_date">
+                              <div>
+                                {new Date(item.bidTime)
+                                  .toTimeString()
+                                  .substring(0, 8)}
+                              </div>
+                              <div>{new Date(item.bidTime).toDateString()}</div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </MyItem>
+            </Grid>
           </Grid>
-          <Grid container item md={3} spacing={2} height="100%">
-            <Toolbar />
-
-            <div style={{ margin: "0 30%" }}>
-              <Chat auction_id={id} />
+          <Grid container item md={2} spacing={2} height="100%">
+            <div style={{ margin: "10px" }}>
+              <div style={{ height: "20px" }}>{""}</div>
+              <Chat auction_id={id} chat={chat.slice(0, 7)} />
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleClickClose}
+              >
+                Licitálás befejezése
+              </Button>
             </div>
           </Grid>
         </Grid>
