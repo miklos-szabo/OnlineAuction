@@ -75,9 +75,13 @@ namespace OnlineAuction.Bll.AuctionService
 
         public async Task<AuctionDetailsDto> GetAuctionDetails(int auctionId)
         {
-            return await _context.Auctions
-                .ProjectTo<AuctionDetailsDto>(_mapper.ConfigurationProvider)
-                .SingleAsync(a => a.Id == auctionId);
+            var auction = await _context.Auctions.Include(a => a.Bids).SingleAsync(a => a.Id == auctionId);
+            var details = _mapper.Map<AuctionDetailsDto>(auction);
+
+            details.IsBidButtonActive = _requestContext.UserName != details.Creator && details.StartTime < DateTime.Now && details.EndTime > DateTime.Now && !auction.IsClosedByCreator;
+            details.IsCloseAuctionButtonActive = _requestContext.UserName == details.Creator && details.EndTime > DateTime.Now && !auction.IsClosedByCreator;
+
+            return details;
         }
 
         public async Task EditAuction(EditAuctionDto dto)
@@ -117,8 +121,8 @@ namespace OnlineAuction.Bll.AuctionService
             if (auction == null)
                 throw new NotFoundException($"Auction {dto.AuctionId} was not found");
 
-            if(auction.Bids.Count != 0 && dto.Price <= auction.Bids.Max(b => b.Price))
-                throw new BadRequestException("Price is lower than the current highest bid + starting price!");
+            if(auction.Bids.Count != 0 && dto.Price < auction.Bids.Max(b => b.Price) + auction.PriceStep)
+                throw new BadRequestException("Price is lower than the current highest bid + price step!");
 
             if (dto.Price < auction.StartingPrice)
                 throw new BadRequestException("Price is lower than the starting price!");
