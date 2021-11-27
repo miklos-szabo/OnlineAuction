@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineAuction.Dal;
 
 namespace OnlineAuction.Dal.Migrations
 {
     [DbContext(typeof(OnlineAuctionContext))]
-    partial class CoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211127140136_Unnecessary_Items")]
+    partial class Unnecessary_Items
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +36,6 @@ namespace OnlineAuction.Dal.Migrations
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsClosedByCreator")
-                        .HasColumnType("bit");
 
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");

@@ -15,8 +15,6 @@ namespace OnlineAuction.Common.DTOs
         public string Creator { get; set; }
         public int StartingPrice { get; set; }
         public int PriceStep { get; set; }
-        public bool IsCloseAuctionButtonActive { get; set; }
-        public bool IsBidButtonActive { get; set; }
 
         public int? HighestBid { get; set; }
         public List<BidDto> LastBids { get; set; }

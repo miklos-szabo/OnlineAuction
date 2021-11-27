@@ -9,7 +9,6 @@ namespace OnlineAuction.Dal.Entities
         public int Id { get; set; }
         public int AuctionId { get; set; }
         public string BidderUserName { get; set; }
-        public string BidderFullName { get; set; }
         public int Price { get; set; }
         public DateTime BidTime { get; set; }
 

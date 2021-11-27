@@ -37,8 +37,8 @@ namespace OnlineAuction.Bll.AuctionService
             {
                 Creator = _requestContext.UserName,
                 Description = dto.Description,
-                StartTime = dto.StartTime,
-                EndTime = dto.EndTime,
+                StartTime = dto.StartTime.ToLocalTime(),
+                EndTime = dto.EndTime.ToLocalTime(),
                 Picture = Convert.FromBase64String(dto.Picture),
                 ItemName = dto.ItemName,
                 PriceStep = dto.PriceStep ,
@@ -75,13 +75,9 @@ namespace OnlineAuction.Bll.AuctionService
 
         public async Task<AuctionDetailsDto> GetAuctionDetails(int auctionId)
         {
-            var auction = await _context.Auctions.Include(a => a.Bids).SingleAsync(a => a.Id == auctionId);
-            var details = _mapper.Map<AuctionDetailsDto>(auction);
-
-            details.IsBidButtonActive = _requestContext.UserName != details.Creator && details.StartTime < DateTime.Now && details.EndTime > DateTime.Now && !auction.IsClosedByCreator;
-            details.IsCloseAuctionButtonActive = _requestContext.UserName == details.Creator && details.EndTime > DateTime.Now && !auction.IsClosedByCreator;
-
-            return details;
+            return await _context.Auctions
+                .ProjectTo<AuctionDetailsDto>(_mapper.ConfigurationProvider)
+                .SingleAsync(a => a.Id == auctionId);
         }
 
         public async Task EditAuction(EditAuctionDto dto)
@@ -92,8 +88,8 @@ namespace OnlineAuction.Bll.AuctionService
                 throw new NotFoundException($"Auction {dto.Id} was not found");
 
             auction.Description = dto.Description;
-            auction.StartTime = dto.StartTime;
-            auction.EndTime = dto.EndTime;
+            auction.StartTime = dto.StartTime.ToLocalTime();
+            auction.EndTime = dto.EndTime.ToLocalTime();
             auction.Picture = dto.Picture;
             auction.ItemName = dto.ItemName;
             auction.PriceStep = dto.PriceStep;
@@ -140,7 +136,6 @@ namespace OnlineAuction.Bll.AuctionService
             {
                 AuctionId = dto.AuctionId,
                 BidTime = DateTime.Now,
-                BidderFullName = _requestContext.Name,
                 BidderUserName = _requestContext.UserName,
                 Price = dto.Price
             };
@@ -164,7 +159,7 @@ namespace OnlineAuction.Bll.AuctionService
             {
                 AuctionId = auctionId,
                 Message = message,
-                SenderFullName = _requestContext.UserName,
+                SenderUserName = _requestContext.UserName,
                 TimeStamp = DateTime.Now,
             };
 
