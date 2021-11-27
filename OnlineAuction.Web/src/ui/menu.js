@@ -84,7 +84,7 @@ export default function Menu(props) {
               </Grid>
               <Grid item md={2}>
                 <Button className="log" href="/" color="inherit">
-                  LogOut
+                  {localStorage.getItem("creator")} &ensp; LogOut
                 </Button>
               </Grid>
             </Grid>
