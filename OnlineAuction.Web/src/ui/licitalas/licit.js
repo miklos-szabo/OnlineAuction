@@ -51,7 +51,6 @@ export default function Licitalas(props) {
   const latestChat = useRef(null);
 
   let connection;
-  let closed;
 
   latestChat.current = chat;
 
@@ -123,16 +122,8 @@ export default function Licitalas(props) {
           setBidList(bid);
         });
       })
-      .then(() => {
-        if (closed) connection.send("LeaveAuction", id);
-      })
       .catch((e) => console.log("Connection failed: ", e));
   }, []);
-
-  const handleClickClose = (connection) => {
-    closed = true;
-    console.log(closed);
-  };
 
   const handleClick = () => {
     fetch(process.env.REACT_APP_API + "Auction/" + id + "/Bid", {
@@ -276,13 +267,6 @@ export default function Licitalas(props) {
             <div style={{ margin: "10px" }}>
               <div style={{ height: "20px" }}>{""}</div>
               <Chat auction_id={id} chat={chat.slice(0, 7)} />
-              <Button
-                variant="contained"
-                color="error"
-                onClick={handleClickClose}
-              >
-                Licitálás befejezése
-              </Button>
             </div>
           </Grid>
         </Grid>
