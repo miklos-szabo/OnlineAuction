@@ -6,12 +6,12 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import picture from "../../teszt.jpg";
-import "./licit.css";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import Chat from "../chat/chat";
 import { HubConnectionBuilder } from "@microsoft/signalr";
+import "./licit.css";
 
 import Menu from "../menu";
 
@@ -198,7 +198,7 @@ export default function Licitalas(props) {
                 </div>
               </MyItem>
               <MyItem className="table_btn_licit">
-                <table>
+                <table className="licit_table">
                   {datas.highestBid == null && (
                     <tr>
                       <td>Kezdő licit: </td>
@@ -244,7 +244,7 @@ export default function Licitalas(props) {
                   {" "}
                   {bidList == undefined && <div>Még nincs licit</div>}
                   {bidList != undefined && (
-                    <table id="customers">
+                    <table className="licit_table" id="customers">
                       <thead>
                         <th>Licitáló</th>
                         <th>Licit értéke</th>

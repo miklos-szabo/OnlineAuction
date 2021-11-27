@@ -8,7 +8,8 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Menu from "../menu";
-import "./aukciok_list.css";
+//import "./aukciok_list.css";
+import "./aukcio_table.css";
 import GavelIcon from "@mui/icons-material/Gavel";
 
 export default function Jelenaukciok_list() {
@@ -41,36 +42,49 @@ export default function Jelenaukciok_list() {
       <Menu />
       <Box component="main">
         <Toolbar />
-        <div className="licitek">
-          <table id="customers">
-            <thead>
-              <th>Termék</th>
-              <th>Legmagasabb licit</th>
-              <th>Licit lezárása</th>
-              <th>Eladó</th>
-              <th>Licitálok</th>
-            </thead>
-            <tbody>
-              {datas.map((item) => (
-                <tr>
-                  <td>{item.itemName}</td>
-                  <td>{item.highestBid}</td>
-                  <td>
-                    {new Date(item.endTime).toTimeString().substring(0, 8) +
-                      "\t" +
-                      new Date(item.endTime).toDateString()}
-                  </td>
-                  <td>{item.creator}</td>
-                  <td>
-                    <Button variant="contained" href={"/licitalas/" + item.id}>
-                      <GavelIcon />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Grid container>
+          <Grid item md={12}>
+            <h2>Aktuális aukciók</h2>
+          </Grid>
+          <Grid item md={1}></Grid>
+          <Grid item md={10} alignItems="center" justifyContent="center">
+            <div className="licitek">
+              <table className="aukcio_list_table" id="customers">
+                <thead>
+                  <th>Termék</th>
+                  <th>Legmagasabb licit</th>
+                  <th>Licit lezárása</th>
+                  <th>Eladó</th>
+                  <th>Licitálok</th>
+                </thead>
+                <tbody>
+                  {datas.map((item) => (
+                    <tr>
+                      <td>{item.itemName}</td>
+                      <td>{item.highestBid}</td>
+                      <td>
+                        {new Date(item.endTime).toTimeString().substring(0, 8) +
+                          "\t" +
+                          new Date(item.endTime).toDateString()}
+                      </td>
+                      <td>{item.creator}</td>
+                      <td>
+                        <Button
+                          variant="contained"
+                          style={{ width: "20px" }}
+                          href={"/licitalas/" + item.id}
+                        >
+                          <GavelIcon />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Grid>
+          <Grid item md={1}></Grid>
+        </Grid>
       </Box>
     </Box>
   );

@@ -55,7 +55,7 @@ export default function Login(props) {
     ) {
       alert("Hibás felhasználónév vagy jelszó!");
     } else if (auth.signin == true) {
-      navigate("/aukcio");
+      navigate("/jelenaukciok_list");
     }
   }, [auth]);
 

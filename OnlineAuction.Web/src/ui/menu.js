@@ -28,12 +28,6 @@ export default function Menu(props) {
         >
           <Toolbar>
             <Grid container md={12} spacing={1}>
-              <Grid item md={1}>
-                <Typography variant="h6" component="div" sx={{ mr: 3 }}>
-                  Aukciók
-                </Typography>
-              </Grid>
-
               <Grid item md={2}>
                 <Button
                   className="btn"
@@ -78,7 +72,7 @@ export default function Menu(props) {
                 </Button>
               </Grid>
 
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <Button
                   className="btn"
                   variant="contained"
@@ -88,7 +82,7 @@ export default function Menu(props) {
                   Saját
                 </Button>
               </Grid>
-              <Grid item md={1}>
+              <Grid item md={2}>
                 <Button className="log" href="/" color="inherit">
                   LogOut
                 </Button>

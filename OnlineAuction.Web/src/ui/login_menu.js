@@ -28,19 +28,12 @@ export default function Menu(props) {
         >
           <Toolbar>
             <Grid container md={12} spacing={1}>
-              <Grid item md={1}>
-                <Typography variant="h6" component="div" sx={{ mr: 3 }}>
-                  Aukciók
-                </Typography>
-              </Grid>
-
               <Grid item md={2}>
                 <Button
                   disabled
                   className="btn"
                   variant="contained"
                   color="menu_button"
-                  href="/aukcio"
                 >
                   Új aukció
                 </Button>
@@ -52,7 +45,6 @@ export default function Menu(props) {
                   className="btn"
                   variant="contained"
                   color="menu_button"
-                  href="/regiaukciok_list"
                 >
                   Régebbi aukciók
                 </Button>
@@ -64,7 +56,6 @@ export default function Menu(props) {
                   className="btn"
                   variant="contained"
                   color="menu_button"
-                  href="/jelenaukciok_list"
                 >
                   Jelenlegi aukciók
                 </Button>
@@ -76,15 +67,23 @@ export default function Menu(props) {
                   className="btn"
                   variant="contained"
                   color="menu_button"
-                  href="/jovoaukciok_list"
                 >
                   Jövőbeni aukciók
                 </Button>
               </Grid>
 
-              <Grid item md={1}></Grid>
-              <Grid item md={1}>
-                <Button disabled className="log" href="/" color="inherit">
+              <Grid item md={2}>
+                <Button
+                  disabled
+                  className="btn"
+                  variant="contained"
+                  color="menu_button"
+                >
+                  Saját
+                </Button>
+              </Grid>
+              <Grid item md={2}>
+                <Button disabled className="log" color="inherit">
                   LogOut
                 </Button>
               </Grid>

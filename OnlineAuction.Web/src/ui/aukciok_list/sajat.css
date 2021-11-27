@@ -1,0 +1,35 @@
+table.table_sajat thead {
+  background-color: #7593f7;
+  color: white;
+}
+
+table.table_sajat {
+  margin: auto;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-radius: 12px;
+  width: 80%;
+  overflow: hidden;
+  position: absolute;
+}
+
+table.table_sajat > tbody > tr:nth-child(even) > td {
+  color: grey;
+  background-color: #f2f2f2;
+}
+
+table.table_sajat > tbody > tr:nth-child(odd) > td {
+  color: grey;
+}
+
+table.table_sajat th,
+table.table_sajat td {
+  padding: 10px;
+  font-size: 15px;
+}
+
+table.table_sajat th {
+  font-weight: normal;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: start;
+}
