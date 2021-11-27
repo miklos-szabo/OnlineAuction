@@ -175,7 +175,7 @@ export default function Sajat() {
               <table className="table_sajat" id="customers">
                 <thead>
                   <th>Termék</th>
-                  <th>Legmagasabb licit</th>
+                  <th>Kezdőlicit</th>
                   <th>Licit lezárása</th>
                   <th>Eladó</th>
                   <th>Szerkesztés</th>
@@ -187,7 +187,7 @@ export default function Sajat() {
                       item.creator == localStorage.getItem("creator") && (
                         <tr>
                           <td>{item.itemName}</td>
-                          <td>{item.highestBid}</td>
+                          <td>{item.startingPrice}</td>
                           <td>
                             {new Date(item.endTime)
                               .toTimeString()
