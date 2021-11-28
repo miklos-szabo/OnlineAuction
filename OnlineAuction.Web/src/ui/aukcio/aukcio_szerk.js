@@ -120,7 +120,7 @@ export default function AukcioSzerk(props) {
             <Grid container item md={12}>
               <Grid item md={1}></Grid>
               <Grid item md={11}>
-                <h2>Aukció létrehozása</h2>
+                <h2>Aukció szerkesztése</h2>
               </Grid>
             </Grid>
             <Grid container item md={1}></Grid>
