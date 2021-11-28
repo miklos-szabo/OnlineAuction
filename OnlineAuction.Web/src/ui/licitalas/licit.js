@@ -5,10 +5,9 @@ import { makeStyles } from "@material-ui/styles";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import picture from "../../teszt.jpg";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Chat from "../chat/chat";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import "./licit.css";
@@ -26,11 +25,6 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => {
   return {
-    /*root: {
-      display: "flex",
-      background: "linear-gradient(135deg, #eeeeee 30%, #bdbdbd 90%)",
-      //height: "100%",
-    },*/
     page: {
       height: "100%",
     },
@@ -107,13 +101,8 @@ export default function Licitalas(props) {
       })
       .then(() => {
         connection.on("ReceiveChatMessage", (message) => {
-          /*const updatedChat = [...latestChat.current];
-          updatedChat.push(message);
-          setMessageList([...messageList, message]);
-          setChat(updatedChat);*/
           const updatedChat = [...latestChat.current];
           updatedChat.push(message);
-          //setMessageList(message);
           setChat(message);
         });
       })

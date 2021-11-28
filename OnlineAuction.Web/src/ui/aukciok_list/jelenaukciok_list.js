@@ -4,11 +4,7 @@ import Button from "@mui/material/Button";
 import { Grid } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import Menu from "../menu";
-//import "./aukciok_list.css";
 import "./aukcio_table.css";
 import GavelIcon from "@mui/icons-material/Gavel";
 

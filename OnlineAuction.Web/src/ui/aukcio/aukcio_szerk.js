@@ -9,11 +9,7 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import "./aukcio.css";
 import Menu from "../menu";
-import Icon from "@mui/material/Icon";
-import ImageIcon from "@mui/icons-material/Image";
 import DateTimePicker from "react-datetime-picker";
-import { Buffer } from "buffer";
-import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
 import { useNavigate, useParams } from "react-router-dom";
 
 const MyItem = styled(Paper)(({ theme }) => ({

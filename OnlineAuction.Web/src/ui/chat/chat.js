@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { HubConnectionBuilder } from "@microsoft/signalr";
+import React from "react";
 
 import ChatWindow from "./window";
 import ChatInput from "./input";
